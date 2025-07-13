@@ -3,6 +3,7 @@ import type { Task } from "../card/taskCard";
 import type { KanbanColumnData } from "../cols/kabanCols";
 import KanbanColumn from "../cols/kabanCols";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import { useState } from "react";
 
 const openTasks: Task[] = [
   {
@@ -51,18 +52,6 @@ const openTasks: Task[] = [
     dueDate: "Tomorrow 12:00 pm",
     status: "Open",
   },
-  {
-    id: "t409",
-    title: "Develop and deliver trai...",
-    assignee: {
-      name: "Cody Fisher",
-      avatarUrl: "https://i.pravatar.cc/150?img=3",
-      initials: "CF",
-      bgColor: "bg-yellow-500",
-    },
-    dueDate: "Tomorrow 04:00 am",
-    status: "In progress",
-  },
 ];
 
 const inProgressTasks: Task[] = [
@@ -110,6 +99,18 @@ const inProgressTasks: Task[] = [
     status: "In progress",
   },
   {
+    id: "t409",
+    title: "Develop and deliver trai...",
+    assignee: {
+      name: "Cody Fisher",
+      avatarUrl: "https://i.pravatar.cc/150?img=3",
+      initials: "CF",
+      bgColor: "bg-yellow-500",
+    },
+    dueDate: "Tomorrow 04:00 pm",
+    status: "In progress",
+  },
+  {
     id: "t901",
     title: "867 Wireless caharging",
     assignee: {
@@ -138,21 +139,52 @@ const completedTasks: Task[] = [
   },
 ];
 
-const boardData: KanbanColumnData[] = [
-  { id: "col1", title: "Open", tasks: openTasks.slice(0, 3) },
+const baseBoardData: KanbanColumnData[] = [
+  { id: "col1", title: "Open", tasks: openTasks },
   { id: "col2", title: "In Progress", tasks: inProgressTasks },
   { id: "col3", title: "Completed", tasks: completedTasks },
 ];
 
 export const KanbanBoard = () => {
+  const [boardData, setBoardData] = useState<KanbanColumnData[]>(baseBoardData);
 
-    const handleDragEnd = (event:DragEndEvent) => {
-        const { active, over } = event;
-        if (!over) return;
-        const taskId = active.id;
-        const newColumnId = over.id;
-        console.log(`Move task ${taskId} to column ${newColumnId}`);
-    }
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+    const taskId = active.id;
+    const newColumnId = over.id;
+    setBoardData((prevBoardData) => {
+      const taskToMove = prevBoardData
+        .flatMap((col) => col.tasks)
+        .find((task) => task.id === taskId);
+
+      if (!taskToMove) return prevBoardData;
+
+      return prevBoardData.map((column) => {
+        if (column.id === newColumnId) {
+          return {
+            ...column,
+            tasks: [
+              ...column.tasks,
+              {
+                ...taskToMove,
+                status:
+                  column.title === "Open"
+                    ? "Open"
+                    : column.title === "In Progress"
+                    ? "In progress"
+                    : "Completed",
+              },
+            ],
+          };
+        }
+        return {
+          ...column,
+          tasks: column.tasks.filter((task) => task.id !== taskId),
+        };
+      });
+    });
+  };
 
   return (
     <main className="bg-white w-full p-4 md:p-6 lg:p-8">

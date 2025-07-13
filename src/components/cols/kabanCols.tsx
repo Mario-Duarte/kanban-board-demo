@@ -15,6 +15,7 @@ interface KanbanColumnProps {
 function KanbanColumn({ column }: KanbanColumnProps) {
   const { setNodeRef, isOver } = useDroppable({
     id: column.id,
+    data: { column },
   });
 
   return (
@@ -39,9 +40,11 @@ function KanbanColumn({ column }: KanbanColumnProps) {
       )}
 
       <div className="flex flex-col gap-4">
-        {column.tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
+        {[...column.tasks]
+          .sort((a, b) => a.id.localeCompare(b.id))
+          .map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
       </div>
     </div>
   );
