@@ -155,39 +155,44 @@ export const KanbanBoard = () => {
     const newColumnId = over.id;
     setBoardData((prevBoardData) => {
       const taskToMove = prevBoardData
-        .flatMap((col) => col.tasks)
-        .find((task) => task.id === taskId);
+      .flatMap((col) => col.tasks)
+      .find((task) => task.id === taskId);
 
       if (!taskToMove) return prevBoardData;
 
+      const targetColumn = prevBoardData.find((col) => col.id === newColumnId);
+      if (targetColumn && targetColumn.tasks.some((task) => task.id === taskId)) {
+      return prevBoardData;
+      }
+
       return prevBoardData.map((column) => {
-        if (column.id === newColumnId) {
-          return {
-            ...column,
-            tasks: [
-              ...column.tasks,
-              {
-                ...taskToMove,
-                status:
-                  column.title === "Open"
-                    ? "Open"
-                    : column.title === "In Progress"
-                    ? "In progress"
-                    : "Completed",
-              },
-            ],
-          };
-        }
+      if (column.id === newColumnId) {
         return {
-          ...column,
-          tasks: column.tasks.filter((task) => task.id !== taskId),
+        ...column,
+        tasks: [
+          ...column.tasks,
+          {
+          ...taskToMove,
+          status:
+            column.title === "Open"
+            ? "Open"
+            : column.title === "In Progress"
+            ? "In progress"
+            : "Completed",
+          },
+        ],
         };
+      }
+      return {
+        ...column,
+        tasks: column.tasks.filter((task) => task.id !== taskId),
+      };
       });
     });
   };
 
   return (
-    <main className="bg-white w-full p-4 md:p-6 lg:p-8">
+    <main className="bg-white w-full p-4 md:p-6 lg:p-8 overflow-x-hidden">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
           All tickets

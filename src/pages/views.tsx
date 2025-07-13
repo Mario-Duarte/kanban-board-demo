@@ -7,7 +7,7 @@ function ViewsPage() {
   return (
     <div className="flex flex-row justify-flexStart min-h-screen bg-gray-100">
       <ViewsNav />
-      <div className="flex-1 flex flex-col justify-flexStart min-h-screen bg-white">
+      <div className="flex-1 flex flex-col justify-flexStart min-h-screen bg-white overflow-hidden">
         <TopBar
           pageTitle="Tickets"
           pageIcon={<RiTicketLine size={24} />}
