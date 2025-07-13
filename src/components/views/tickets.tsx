@@ -1,11 +1,12 @@
-import { FiChevronDown, FiList, FiGrid } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 import type { Task } from "../card/taskCard";
 import type { KanbanColumnData } from "../cols/kabanCols";
 import KanbanColumn from "../cols/kabanCols";
+import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 
-const overdueTasks: Task[] = [
+const openTasks: Task[] = [
   {
-    id: "t1",
+    id: "t132",
     title: "867 Wireless caharging",
     assignee: {
       name: "Kathryn Murphy",
@@ -16,19 +17,7 @@ const overdueTasks: Task[] = [
     status: "Open",
   },
   {
-    id: "t2",
-    title: "Monitor social media ch...",
-    assignee: {
-      name: "Savannah Nguyen",
-      avatarUrl: "https://i.pravatar.cc/150?img=1",
-      initials: "SN",
-      bgColor: "bg-blue-500",
-    },
-    dueDate: "Late by 01:30 hour",
-    status: "In progress",
-  },
-  {
-    id: "t3",
+    id: "t333",
     title: "867 Wireless caharging",
     assignee: {
       name: "Robert Fox",
@@ -40,7 +29,30 @@ const overdueTasks: Task[] = [
     status: "Open",
   },
   {
-    id: "t4",
+    id: "t874",
+    title: "Escalate complex cus...",
+    assignee: {
+      name: "Cameron Williamson",
+      avatarUrl: "https://i.pravatar.cc/150?img=6",
+      initials: "CW",
+      bgColor: "bg-indigo-500",
+    },
+    dueDate: "Tomorrow 12:00 pm",
+    status: "Open",
+  },
+  {
+    id: "t102",
+    title: "867 Wireless caharging",
+    assignee: {
+      name: "Esther Howard",
+      initials: "E",
+      bgColor: "bg-orange-500",
+    },
+    dueDate: "Tomorrow 12:00 pm",
+    status: "Open",
+  },
+  {
+    id: "t409",
     title: "Develop and deliver trai...",
     assignee: {
       name: "Cody Fisher",
@@ -53,9 +65,21 @@ const overdueTasks: Task[] = [
   },
 ];
 
-const dueIn6HoursTasks: Task[] = [
+const inProgressTasks: Task[] = [
   {
-    id: "t5",
+    id: "t273",
+    title: "Monitor social media ch...",
+    assignee: {
+      name: "Savannah Nguyen",
+      avatarUrl: "https://i.pravatar.cc/150?img=1",
+      initials: "SN",
+      bgColor: "bg-blue-500",
+    },
+    dueDate: "Late by 01:30 hour",
+    status: "In progress",
+  },
+  {
+    id: "t587",
     title: "Escalate complex cus...",
     assignee: {
       name: "Leslie Alexander",
@@ -63,18 +87,18 @@ const dueIn6HoursTasks: Task[] = [
       initials: "LA",
       bgColor: "bg-purple-500",
     },
-    dueDate: "Tomorrow 04:00 am",
+    dueDate: "Tomorrow 09:00 am",
     status: "In progress",
   },
   {
-    id: "t6",
+    id: "t667",
     title: "Develop and deliver trai...",
     assignee: { name: "Guy Hawkins", initials: "G", bgColor: "bg-cyan-500" },
-    dueDate: "Tomorrow 04:00 am",
+    dueDate: "Tomorrow 09:00 am",
     status: "In progress",
   },
   {
-    id: "t7",
+    id: "t709",
     title: "867 Wireless caharging",
     assignee: {
       name: "Jacob Jones",
@@ -82,26 +106,11 @@ const dueIn6HoursTasks: Task[] = [
       initials: "JJ",
       bgColor: "bg-pink-500",
     },
-    dueDate: "Tomorrow 04:00 am",
+    dueDate: "Tomorrow 10:00 am",
     status: "In progress",
   },
-];
-
-const dueIn12HoursTasks: Task[] = [
   {
-    id: "t8",
-    title: "Escalate complex cus...",
-    assignee: {
-      name: "Cameron Williamson",
-      avatarUrl: "https://i.pravatar.cc/150?img=6",
-      initials: "CW",
-      bgColor: "bg-indigo-500",
-    },
-    dueDate: "Tomorrow 12:00 pm",
-    status: "Open",
-  },
-  {
-    id: "t9",
+    id: "t901",
     title: "867 Wireless caharging",
     assignee: {
       name: "Jacob Jones",
@@ -112,19 +121,11 @@ const dueIn12HoursTasks: Task[] = [
     dueDate: "Tomorrow 12:00 pm",
     status: "In progress",
   },
+];
+
+const completedTasks: Task[] = [
   {
-    id: "t10",
-    title: "867 Wireless caharging",
-    assignee: {
-      name: "Esther Howard",
-      initials: "E",
-      bgColor: "bg-orange-500",
-    },
-    dueDate: "Tomorrow 12:00 pm",
-    status: "Open",
-  },
-  {
-    id: "t11",
+    id: "t111",
     title: "867 Wireless caharging",
     assignee: {
       name: "Wade Warren",
@@ -133,17 +134,26 @@ const dueIn12HoursTasks: Task[] = [
       bgColor: "bg-teal-500",
     },
     dueDate: "Tomorrow 12:00 pm",
-    status: "Escalated",
+    status: "Completed",
   },
 ];
 
 const boardData: KanbanColumnData[] = [
-  { id: "col1", title: "Overdue", tasks: overdueTasks.slice(0, 3) }, // Sliced to match image
-  { id: "col2", title: "Due in 6 hours", tasks: dueIn6HoursTasks },
-  { id: "col3", title: "Due in 12 hours and more", tasks: dueIn12HoursTasks },
+  { id: "col1", title: "Open", tasks: openTasks.slice(0, 3) },
+  { id: "col2", title: "In Progress", tasks: inProgressTasks },
+  { id: "col3", title: "Completed", tasks: completedTasks },
 ];
 
 export const KanbanBoard = () => {
+
+    const handleDragEnd = (event:DragEndEvent) => {
+        const { active, over } = event;
+        if (!over) return;
+        const taskId = active.id;
+        const newColumnId = over.id;
+        console.log(`Move task ${taskId} to column ${newColumnId}`);
+    }
+
   return (
     <main className="bg-white w-full p-4 md:p-6 lg:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
@@ -151,24 +161,15 @@ export const KanbanBoard = () => {
           All tickets
           <FiChevronDown />
         </button>
+      </div>
 
-        <div className="flex items-center border border-gray-300 rounded-md p-0.5">
-          <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 rounded-md">
-            <FiList />
-            List
-          </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-gray-800 bg-gray-100 rounded-md">
-            <FiGrid />
-            Grid
-          </button>
+      <DndContext onDragEnd={handleDragEnd}>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {boardData.map((column) => (
+            <KanbanColumn key={column.id} column={column} />
+          ))}
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {boardData.map((column) => (
-          <KanbanColumn key={column.id} column={column} />
-        ))}
-      </div>
+      </DndContext>
     </main>
   );
 };

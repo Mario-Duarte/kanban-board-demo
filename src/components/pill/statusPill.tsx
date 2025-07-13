@@ -1,9 +1,9 @@
-export type TaskStatus = "Open" | "In progress" | "Escalated";
+export type TaskStatus = "Open" | "In progress" | "Completed";
 
 const STATUS_STYLES: Record<TaskStatus, string> = {
   Open: "bg-purple-100 text-purple-700",
   "In progress": "bg-blue-100 text-blue-700",
-  Escalated: "bg-yellow-100 text-yellow-800",
+  Completed: "bg-yellow-100 text-yellow-800",
 };
 
 interface StatusPillProps {

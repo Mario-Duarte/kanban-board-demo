@@ -3,6 +3,8 @@ import React from "react";
 import { FiTool, FiClock, FiClipboard } from "react-icons/fi";
 import Avatar from "../avatar/avatar";
 import { StatusPill, type TaskStatus } from "../pill/statusPill";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 export interface Assignee {
   name: string;
@@ -24,8 +26,24 @@ interface TaskCardProps {
 }
 
 export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: task.id,
+    });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    opacity: isDragging ? 0.8 : 1,
+  };
+
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div
+      className={`bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200 cursor-grab`}
+      style={style}
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+    >
       <div className="flex flex-col gap-3">
         <div className="flex items-start gap-2">
           <FiTool className="text-gray-500 mt-1 flex-shrink-0" />
