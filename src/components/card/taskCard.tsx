@@ -34,12 +34,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
 
   const style = {
     transform: CSS.Translate.toString(transform),
-    opacity: isDragging ? 0.8 : 1,
   };
 
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200 cursor-grab`}
+      className={` border ${isDragging ? 'bg-slate-200' : 'bg-white'} border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200 cursor-grab`}
       style={style}
       ref={setNodeRef}
       {...listeners}

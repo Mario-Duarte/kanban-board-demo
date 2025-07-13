@@ -8,7 +8,7 @@ import { useState } from "react";
 const openTasks: Task[] = [
   {
     id: "t132",
-    title: "867 Wireless caharging",
+    title: "Create Q4 social media campaign",
     assignee: {
       name: "Kathryn Murphy",
       initials: "K",
@@ -19,7 +19,7 @@ const openTasks: Task[] = [
   },
   {
     id: "t333",
-    title: "867 Wireless caharging",
+    title: "Design Instagram story templates",
     assignee: {
       name: "Robert Fox",
       avatarUrl: "https://i.pravatar.cc/150?img=2",
@@ -31,7 +31,7 @@ const openTasks: Task[] = [
   },
   {
     id: "t874",
-    title: "Escalate complex cus...",
+    title: "Analyze competitor content strategy",
     assignee: {
       name: "Cameron Williamson",
       avatarUrl: "https://i.pravatar.cc/150?img=6",
@@ -43,7 +43,7 @@ const openTasks: Task[] = [
   },
   {
     id: "t102",
-    title: "867 Wireless caharging",
+    title: "Setup Google Ads campaign",
     assignee: {
       name: "Esther Howard",
       initials: "E",
@@ -57,7 +57,7 @@ const openTasks: Task[] = [
 const inProgressTasks: Task[] = [
   {
     id: "t273",
-    title: "Monitor social media ch...",
+    title: "Write blog post on marketing trends",
     assignee: {
       name: "Savannah Nguyen",
       avatarUrl: "https://i.pravatar.cc/150?img=1",
@@ -69,7 +69,7 @@ const inProgressTasks: Task[] = [
   },
   {
     id: "t587",
-    title: "Escalate complex cus...",
+    title: "Edit product demo video",
     assignee: {
       name: "Leslie Alexander",
       avatarUrl: "https://i.pravatar.cc/150?img=4",
@@ -81,14 +81,14 @@ const inProgressTasks: Task[] = [
   },
   {
     id: "t667",
-    title: "Develop and deliver trai...",
+    title: "Schedule LinkedIn content calendar",
     assignee: { name: "Guy Hawkins", initials: "G", bgColor: "bg-cyan-500" },
     dueDate: "Tomorrow 09:00 am",
     status: "In progress",
   },
   {
     id: "t709",
-    title: "867 Wireless caharging",
+    title: "Create email newsletter template",
     assignee: {
       name: "Jacob Jones",
       avatarUrl: "https://i.pravatar.cc/150?img=5",
@@ -100,7 +100,7 @@ const inProgressTasks: Task[] = [
   },
   {
     id: "t409",
-    title: "Develop and deliver trai...",
+    title: "Optimize website landing page",
     assignee: {
       name: "Cody Fisher",
       avatarUrl: "https://i.pravatar.cc/150?img=3",
@@ -112,7 +112,7 @@ const inProgressTasks: Task[] = [
   },
   {
     id: "t901",
-    title: "867 Wireless caharging",
+    title: "Design Facebook ad creatives",
     assignee: {
       name: "Jacob Jones",
       avatarUrl: "https://i.pravatar.cc/150?img=7",
@@ -127,7 +127,7 @@ const inProgressTasks: Task[] = [
 const completedTasks: Task[] = [
   {
     id: "t111",
-    title: "867 Wireless caharging",
+    title: "Launch influencer partnership campaign",
     assignee: {
       name: "Wade Warren",
       avatarUrl: "https://i.pravatar.cc/150?img=8",
