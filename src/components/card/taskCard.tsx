@@ -35,14 +35,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   const style = {
     transform: CSS.Translate.toString(transform),
   };
+  const colorVariation = isDragging ? "bg-slate-100" : "bg-white";
+  const rotationVariation = isDragging ? `rotate-6` : "rotate-0";
+  const zIndex = isDragging ? 'z-10' : 'z-0';
 
   return (
     <div
-      className={` border ${
-        isDragging ? "bg-slate-100" : "bg-white"
-      } border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200 cursor-grab ${
-        isDragging ? "rotate-6" : "rotate-0"
-      } ${isDragging ? "z-10" : "z-0"}`}
+      className={` border ${colorVariation} border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200 cursor-grab ${rotationVariation} ${zIndex}`}
       style={style}
       ref={setNodeRef}
       {...listeners}
