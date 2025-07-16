@@ -1,7 +1,7 @@
 import { RiTicketLine } from "react-icons/ri";
 import TopBar from "../components/topBar/topBar";
 import ViewsNav from "../components/viewsNav/viewsNav";
-import { KanbanBoard } from "../components/views/tickets";
+import { KanbanBoard } from "../views/tickets";
 
 function ViewsPage() {
   return (

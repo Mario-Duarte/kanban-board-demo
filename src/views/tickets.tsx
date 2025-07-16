@@ -1,9 +1,9 @@
 import { FiChevronDown } from "react-icons/fi";
-import type { Task } from "../card/taskCard";
-import type { KanbanColumnData } from "../cols/kabanCols";
-import KanbanColumn from "../cols/kabanCols";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { useState } from "react";
+import type { Task } from "../components/card/taskCard";
+import type { KanbanColumnData } from "../components/cols/kabanCols";
+import KanbanColumn from "../components/cols/kabanCols";
 
 const openTasks: Task[] = [
   {
@@ -153,6 +153,7 @@ export const KanbanBoard = () => {
     if (!over) return;
     const taskId = active.id;
     const newColumnId = over.id;
+    
     setBoardData((prevBoardData) => {
       const taskToMove = prevBoardData
       .flatMap((col) => col.tasks)
