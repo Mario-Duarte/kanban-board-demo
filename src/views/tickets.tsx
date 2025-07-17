@@ -146,6 +146,7 @@ const baseBoardData: KanbanColumnData[] = [
 ];
 
 export const KanbanBoard = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [boardData, setBoardData] = useState<KanbanColumnData[]>(baseBoardData);
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -153,43 +154,51 @@ export const KanbanBoard = () => {
     if (!over) return;
     const taskId = active.id;
     const newColumnId = over.id;
-    
+
     setBoardData((prevBoardData) => {
       const taskToMove = prevBoardData
-      .flatMap((col) => col.tasks)
-      .find((task) => task.id === taskId);
+        .flatMap((col) => col.tasks)
+        .find((task) => task.id === taskId);
 
       if (!taskToMove) return prevBoardData;
 
       const targetColumn = prevBoardData.find((col) => col.id === newColumnId);
-      if (targetColumn && targetColumn.tasks.some((task) => task.id === taskId)) {
-      return prevBoardData;
+      if (
+        targetColumn &&
+        targetColumn.tasks.some((task) => task.id === taskId)
+      ) {
+        return prevBoardData;
       }
 
       return prevBoardData.map((column) => {
-      if (column.id === newColumnId) {
+        if (column.id === newColumnId) {
+          return {
+            ...column,
+            tasks: [
+              ...column.tasks,
+              {
+                ...taskToMove,
+                status:
+                  column.title === "Open"
+                    ? "Open"
+                    : column.title === "In Progress"
+                    ? "In progress"
+                    : "Completed",
+              },
+            ],
+          };
+        }
         return {
-        ...column,
-        tasks: [
-          ...column.tasks,
-          {
-          ...taskToMove,
-          status:
-            column.title === "Open"
-            ? "Open"
-            : column.title === "In Progress"
-            ? "In progress"
-            : "Completed",
-          },
-        ],
+          ...column,
+          tasks: column.tasks.filter((task) => task.id !== taskId),
         };
-      }
-      return {
-        ...column,
-        tasks: column.tasks.filter((task) => task.id !== taskId),
-      };
       });
     });
+  };
+
+  const onChangeSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = event.target.value.toLowerCase();
+    setSearchQuery(searchTerm);
   };
 
   return (
@@ -199,12 +208,20 @@ export const KanbanBoard = () => {
           All tickets
           <FiChevronDown />
         </button>
+
+        <input
+          type="text"
+          placeholder="Search tickets..."
+          className="w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={searchQuery}
+          onChange={onChangeSearchQuery}
+        />
       </div>
 
       <DndContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {boardData.map((column) => (
-            <KanbanColumn key={column.id} column={column} />
+            <KanbanColumn key={column.id} searchTerm={searchQuery || undefined} column={column} />
           ))}
         </div>
       </DndContext>
